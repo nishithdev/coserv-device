@@ -15,31 +15,24 @@ async def async_setup_entry(
 ):
     user_id = entry.data["user_id"]
     password = entry.data["password"]
-    device_id = f"coserv_{user_id}"  # or just user_id
-    entities = [
-        CoServAccessTokenSensor(user_id, password, device_id)
-    ]
-    async_add_entities(entities)
+    async_add_entities([CoServAuthTokenSensor(user_id, password)], update_before_add=True)
 
-class CoServAccessTokenSensor(SensorEntity):
-    def __init__(self, user_id: str, password: str, device_id: str):
+class CoServAuthTokenSensor(SensorEntity):
+    def __init__(self, user_id: str, password: str):
         self._user_id = user_id
         self._password = password
-        self._device_id = device_id
-        self._attr_name = "CoServ Authorization Token via device"
-        self._attr_unique_id = f"coserv_auth_token_{user_id}"
+        self._attr_name = "CoServ Authorization Token"
+        self._attr_unique_id = f"coserv_token_sensor_{user_id}"
         self._attr_native_value = None
         self._attr_extra_state_attributes = {}
         self._attr_device_class = None
         self._attr_state_class = None
 
-    @property
-    def device_info(self) -> DeviceInfo:
-        return DeviceInfo(
-            identifiers={(DOMAIN, self._device_id)},
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, user_id)},
             name="CoServ Account",
             manufacturer="CoServ",
-            model="SmartHub OAuth",
+            model="SmartHub",
             entry_type="service"
         )
 
@@ -80,7 +73,7 @@ class CoServAccessTokenSensor(SensorEntity):
                         "status": status,
                         "authorizationToken": json_data.get("authorizationToken"),
                         "error": json_data.get("error_description", "No authorizationToken in response"),
-                        "status_code": response.status_code,
+                        "status_code": response.status_code
                     }
 
         except httpx.RequestError as e:
