@@ -21,8 +21,8 @@ class CoServAuthTokenSensor(SensorEntity):
     def __init__(self, user_id: str, password: str):
         self._user_id = user_id
         self._password = password
-        self._attr_name = "CoServ Authorization Token"
-        self._attr_unique_id = f"coserv_token_sensor_{user_id}"
+        self._attr_name = "CoServ Authorization Token device"
+        self._attr_unique_id = f"coserv_token_sensor_device_{user_id}"
         self._attr_native_value = None
         self._attr_extra_state_attributes = {}
         self._attr_device_class = None
