@@ -1,0 +1,7 @@
+{
+    "name": "coserve device",
+    "content_in_root": false,
+    "domains": ["coserv_device"],
+    "country": "US",
+    "homeassistant": "2023.0.0"
+  }
