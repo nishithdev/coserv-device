@@ -9,4 +9,4 @@
     "config_flow": true,
     "integration_type": "integration",
     "iot_class": "cloud_polling"
-  }
+}
